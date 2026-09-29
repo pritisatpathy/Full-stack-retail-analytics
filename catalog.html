@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CartNest | Online Store</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div class="brand" onclick="window.location.reload()">
+            <div class="brand-logo">C</div>
+            <span>CartNest</span>
+        </div>
+
+        <div class="search-area">
+
+            <select id="categorySelect" onchange="fetchProducts()">
+                <option value="">All Categories</option>
+            </select>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products..."
+                oninput="fetchProducts()"
+            >
+
+            <button class="search-button">⌕</button>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                class="header-button cart-button"
+                onclick="openCart()"
+            >
+                🛒 Cart
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+
+            <button
+                class="header-button"
+                onclick="openProfileModal()"
+            >
+                👤 <span id="headerUserName">Login</span>
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-card">
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                ✨ YOUR EVERYDAY STORE
+            </div>
+
+            <h1>
+                Everything you need.<br>
+                All in one place.
+            </h1>
+
+            <p>
+                Explore groceries, food, home essentials and more.
+            </p>
+
+            <button
+                class="hero-button"
+                onclick="document.getElementById('productContainer').scrollIntoView({behavior:'smooth'})"
+            >
+                Shop Now →
+            </button>
+
+        </div>
+
+        <div class="hero-shape"></div>
+
+    </div>
+
+</section>
+
+
+<main>
+
+    <!-- BESTSELLERS -->
+
+    <section id="bestsellerSection">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    🔥 Trending Bestsellers
+                </h2>
+
+                <p class="section-subtitle">
+                    Products customers are buying the most
+                </p>
+
+            </div>
+
+        </div>
+
+        <div
+            id="bestsellerContainer"
+            class="grid"
+        ></div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+
+    <section>
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    🛍️ Explore Our Catalog
+                </h2>
+
+                <p class="section-subtitle">
+                    Discover products across all categories
+                </p>
+
+            </div>
+
+        </div>
+
+        <div
+            id="productContainer"
+            class="grid"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<!-- CART OVERLAY -->
+
+<div
+    class="overlay"
+    id="cartOverlay"
+    onclick="closeCart()"
+></div>
+
+
+<!-- CART -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+    <div class="cart-header">
+
+        <h2>Your Cart</h2>
+
+        <button
+            class="close-cart"
+            onclick="closeCart()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItems"
+    ></div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>Total</span>
+
+            <span id="cartTotal">
+                $0.00
+            </span>
+
+        </div>
+
+        <button
+            class="checkout-button"
+            onclick="goToCheckout()"
+        >
+            PROCEED TO CHECKOUT
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div
+    class="modal-overlay"
+    id="loginModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-side">
+
+            <h2>
+                Welcome Back 👋
+            </h2>
+
+            <p>
+                Sign in to track your orders
+                and manage your account.
+            </p>
+
+        </div>
+
+
+        <div class="modal-main">
+
+            <button
+                class="close-modal"
+                onclick="closeLoginModal()"
+            >
+                ×
+            </button>
+
+            <h2>Sign In</h2>
+
+            <p class="modal-subtitle">
+                Enter your details to continue.
+            </p>
+
+
+            <div class="form-group">
+
+                <label>
+                    Full Name *
+                </label>
+
+                <input
+                    id="loginName"
+                    type="text"
+                    maxlength="50"
+                    autocomplete="name"
+                    placeholder="Enter your full name"
+                >
+
+                <span
+                    class="error"
+                    id="loginNameError"
+                ></span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Phone Number *
+                </label>
+
+                <input
+                    id="loginPhone"
+                    type="tel"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    placeholder="10-digit mobile number"
+                >
+
+                <span
+                    class="error"
+                    id="loginPhoneError"
+                ></span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Email *
+                </label>
+
+                <input
+                    id="loginEmail"
+                    type="email"
+                    maxlength="100"
+                    autocomplete="email"
+                    placeholder="example@gmail.com"
+                >
+
+                <span
+                    class="error"
+                    id="loginEmailError"
+                ></span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Date of Birth
+                    <span style="font-weight:400;">(Optional)</span>
+                </label>
+
+                <input
+                    id="loginDob"
+                    type="date"
+                    autocomplete="bday"
+                >
+
+                <span
+                    class="error"
+                    id="loginDobError"
+                ></span>
+
+            </div>
+
+
+            <button
+                class="login-button"
+                onclick="handleLogin()"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div
+    class="modal-overlay"
+    id="profileModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-side">
+
+            <h2>
+                My Account
+            </h2>
+
+            <div id="userDetails"></div>
+
+            <button
+                class="logout-button"
+                onclick="handleLogout()"
+            >
+                Sign Out
+            </button>
+
+        </div>
+
+
+        <div class="modal-main">
+
+            <button
+                class="close-modal"
+                onclick="document.getElementById('profileModal').classList.remove('active')"
+            >
+                ×
+            </button>
+
+            <h2>
+                Recent Orders
+            </h2>
+
+            <div
+                class="orders"
+                id="orderHistory"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-title">
+                CartNest
+            </div>
+
+            <div class="footer-text">
+                Your everyday online store.
+            </div>
+
+        </div>
+
+        <div class="footer-text">
+            Built as a full-stack retail project.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+
+/* =========================
+   VALIDATION
+========================= */
+
+function validName(value) {
+
+    return /^[A-Za-z]+(?:[ '’-][A-Za-z]+)*$/.test(value)
+        && value.length >= 2;
+}
+
+
+function validPhone(value) {
+
+    return /^\d{10}$/.test(value);
+}
+
+
+function setLoginError(
+    fieldId,
+    errorId,
+    message
+) {
+
+    const field =
+        document.getElementById(fieldId);
+
+    const error =
+        document.getElementById(errorId);
+
+    field.classList.toggle(
+        "invalid",
+        !!message
+    );
+
+    field.classList.toggle(
+        "valid",
+        !message && field.value.trim() !== ""
+    );
+
+    error.innerText =
+        message || "";
+
+}
+
+
+/* =========================
+   CART
+========================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    updateCartUI();
+
+}
+
+
+function addToCart(product) {
+
+    const existing =
+        cart.find(
+            item => item.id === product.id
+        );
+
+
+    if (existing) {
+
+        existing.quantity += 1;
+
+    } else {
+
+        cart.push({
+
+            id: product.id,
+
+            name: product.name,
+
+            price: product.price,
+
+            category: product.category,
+
+            image: product.image,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    saveCart();
+
+    openCart();
+
+}
+
+
+function changeQuantity(
+    id,
+    amount
+) {
+
+    const item =
+        cart.find(
+            item => item.id === id
+        );
+
+
+    if (!item) return;
+
+
+    item.quantity += amount;
+
+
+    if (item.quantity <= 0) {
+
+        cart =
+            cart.filter(
+                item => item.id !== id
+            );
+
+    }
+
+
+    saveCart();
+
+}
+
+
+function removeFromCart(id) {
+
+    cart =
+        cart.filter(
+            item => item.id !== id
+        );
+
+    saveCart();
+
+}
+
+
+function updateCartUI() {
+
+    const count =
+        cart.reduce(
+            (sum, item) =>
+                sum + item.quantity,
+            0
+        );
+
+
+    document.getElementById(
+        "cartCount"
+    ).innerText = count;
+
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if (cart.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-cart">
+
+                <div class="empty-cart-icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p>
+                    Add some products to get started.
+                </p>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "cartTotal"
+        ).innerText = "$0.00";
+
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    container.innerHTML =
+        cart.map(item => {
+
+            total +=
+                item.price *
+                item.quantity;
+
+
+            return `
+
+                <div class="cart-item">
+
+                    <img
+                        src="${item.image}"
+                        alt="${item.name}"
+                    >
+
+                    <div class="cart-item-info">
+
+                        <div class="cart-item-name">
+                            ${item.name}
+                        </div>
+
+                        <div class="cart-item-price">
+                            $${item.price.toFixed(2)}
+                        </div>
+
+                        <div class="quantity-control">
+
+                            <button
+                                onclick="changeQuantity('${item.id}', -1)"
+                            >
+                                −
+                            </button>
+
+                            <strong>
+                                ${item.quantity}
+                            </strong>
+
+                            <button
+                                onclick="changeQuantity('${item.id}', 1)"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                        <button
+                            class="remove-item"
+                            onclick="removeFromCart('${item.id}')"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    document.getElementById(
+        "cartTotal"
+    ).innerText =
+        "$" + total.toFixed(2);
+
+}
+
+
+function openCart() {
+
+    updateCartUI();
+
+    document
+        .getElementById("cartDrawer")
+        .classList.add("active");
+
+    document
+        .getElementById("cartOverlay")
+        .classList.add("active");
+
+}
+
+
+function closeCart() {
+
+    document
+        .getElementById("cartDrawer")
+        .classList.remove("active");
+
+    document
+        .getElementById("cartOverlay")
+        .classList.remove("active");
+
+}
+
+
+function goToCheckout() {
+
+    if (cart.length === 0) {
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function validEmail(value) {
+
+    return /^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(value);
+
+}
+
+
+function validateLogin() {
+
+    const name = document.getElementById("loginName").value.trim();
+    const phone = document.getElementById("loginPhone").value.trim();
+    const email = document.getElementById("loginEmail").value.trim();
+    let valid = true;
+
+    if (!validName(name)) {
+        setLoginError("loginName","loginNameError","Enter a valid name using letters and spaces only.");
+        valid = false;
+    } else {
+        setLoginError("loginName","loginNameError","");
+    }
+
+    if (!validPhone(phone)) {
+        setLoginError("loginPhone","loginPhoneError","Phone number must contain exactly 10 digits.");
+        valid = false;
+    } else {
+        setLoginError("loginPhone","loginPhoneError","");
+    }
+
+    if (!validEmail(email)) {
+        setLoginError("loginEmail","loginEmailError","Please enter a valid Gmail address.");
+        valid = false;
+    } else {
+        setLoginError("loginEmail","loginEmailError","");
+    }
+
+    return valid;
+}
+
+
+async function handleLogin() {
+
+    if (!validateLogin()) return;
+
+    const name = document.getElementById("loginName").value.trim();
+    const phone = document.getElementById("loginPhone").value.trim();
+    const email = document.getElementById("loginEmail").value.trim();
+    const dob = document.getElementById("loginDob").value.trim();
+
+    try {
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                customer_name: name,
+                phone: phone,
+                email: email,
+                dob: dob || null
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+            localStorage.setItem("customer_id", data.customer_id);
+            localStorage.setItem("customer_name", data.customer_name);
+            localStorage.setItem("customer_phone", data.phone);
+            localStorage.setItem("customer_email", email);
+            localStorage.setItem("customer_dob", dob);
+            window.location.reload();
+        } else {
+            alert(data.detail || "Login failed.");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Unable to connect to server.");
+    }
+}
+
+
+document.getElementById("loginEmail").addEventListener("input", function() {
+    document.getElementById("loginEmailError").innerText = "";
+    this.classList.remove("invalid");
+});
+
+document.getElementById("loginEmail").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") handleLogin();
+});
+
+
+function closeLoginModal() {
+
+    document
+        .getElementById("loginModal")
+        .classList.remove("active");
+
+}
+
+
+function handleLogout() {
+
+    localStorage.removeItem(
+        "customer_id"
+    );
+
+    localStorage.removeItem(
+        "customer_name"
+    );
+
+    localStorage.removeItem(
+        "customer_phone"
+    );
+
+    localStorage.removeItem(
+        "customer_email"
+    );
+
+    localStorage.removeItem(
+        "customer_dob"
+    );
+
+
+    window.location.reload();
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function openProfileModal() {
+
+    const id =
+        localStorage.getItem(
+            "customer_id"
+        );
+
+    const name =
+        localStorage.getItem(
+            "customer_name"
+        );
+
+    const phone =
+        localStorage.getItem(
+            "customer_phone"
+        );
+
+
+    if (!id) {
+
+        document
+            .getElementById("loginModal")
+            .classList.add("active");
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "userDetails"
+    ).innerHTML = `
+
+        <p class="profile-name">
+            ${name}
+        </p>
+
+        <p class="profile-phone">
+            ${phone}
+        </p>
+
+        <p class="profile-id">
+            ID: ${id}
+        </p>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/orders/${id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "orderHistory"
+            );
+
+
+        if (
+            data.orders &&
+            data.orders.length > 0
+        ) {
+
+            container.innerHTML =
+                data.orders
+                    .map(order => `
+
+                        <div class="order">
+
+                            <div class="order-top">
+
+                                <strong>
+                                    ${order["Order Date"]}
+                                </strong>
+
+                                <strong class="order-price">
+                                    $${parseFloat(
+                                        order["Sales"]
+                                    ).toFixed(2)}
+                                </strong>
+
+                            </div>
+
+                            <div class="order-product">
+
+                                ${order["Product Name"]}
+                                × ${order["Quantity"]}
+
+                            </div>
+
+                        </div>
+
+                    `)
+                    .join("");
+
+        } else {
+
+            container.innerHTML = `
+
+                <p class="no-orders">
+                    No previous orders found.
+                </p>
+
+            `;
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+
+    document
+        .getElementById("profileModal")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   CATEGORIES
+========================= */
+
+async function loadCategories() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/categories"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        const select =
+            document.getElementById(
+                "categorySelect"
+            );
+
+
+        (
+            data.categories ||
+            []
+        ).forEach(category => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                category;
+
+            option.textContent =
+                category;
+
+
+            select.appendChild(
+                option
+            );
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Categories failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   IMAGE HANDLING
+========================= */
+
+function getProductImage(product) {
+
+    /*
+        Keep an image supplied by the API
+        if your backend provides one.
+
+        This also supports common image
+        column names without changing
+        your database.
+    */
+
+    const apiImage =
+        product.image ||
+        product.Image ||
+        product["Image"] ||
+        product["Product Image"] ||
+        product["Image URL"];
+
+    if (apiImage) {
+        return apiImage;
+    }
+
+    const productId =
+        product["Product ID"] ||
+        product.product_id ||
+        product.id;
+
+    if (productId) {
+        return `/images/${encodeURIComponent(productId)}.svg`;
+    }
+
+    return "/images/PRODUCT-FALLBACK.svg";
+
+}
+
+
+/* =========================
+   BESTSELLERS
+========================= */
+
+async function loadBestsellers() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/bestsellers"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "bestsellerContainer"
+            );
+
+
+        container.innerHTML = "";
+
+
+        (
+            data.bestsellers ||
+            []
+        ).forEach(product => {
+
+            container.innerHTML +=
+                createCard(
+                    product,
+                    true
+                );
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Bestsellers failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+async function fetchProducts() {
+
+    try {
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            ).value;
+
+
+        const category =
+            document.getElementById(
+                "categorySelect"
+            ).value;
+
+
+        const response =
+            await fetch(
+                `/api/products?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "bestsellerSection"
+        ).style.display =
+            (
+                search ||
+                category
+            )
+                ? "none"
+                : "block";
+
+
+        const container =
+            document.getElementById(
+                "productContainer"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !data.products ||
+            data.products.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="no-products">
+
+                    <div>
+                        🔎
+                    </div>
+
+                    <h3>
+                        No products found
+                    </h3>
+
+                    <p>
+                        Try another search or category.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        data.products.forEach(
+            product => {
+
+                container.innerHTML +=
+                    createCard(
+                        product,
+                        false
+                    );
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Products failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+function createCard(
+    product,
+    isBest
+) {
+
+    const price =
+        parseFloat(
+            product["Unit Price"] ||
+            product.price ||
+            0
+        );
+
+
+    const category =
+        product["Category of Goods"] ||
+        product.category ||
+        "General";
+
+
+    const name =
+        product["Product Name"] ||
+        product.name ||
+        "Product";
+
+
+    const id =
+        product["Product ID"] ||
+        product.id;
+
+
+    const image =
+        getProductImage(product);
+
+
+    const safeProduct =
+        JSON.stringify({
+
+            id: id,
+
+            name: name,
+
+            price: price,
+
+            category: category,
+
+            image: image
+
+        })
+        .replace(
+            /"/g,
+            "&quot;"
+        );
+
+
+    return `
+
+        <div class="card">
+
+            <div class="card-image">
+
+                ${
+                    isBest
+                    ? `
+                        <div class="best-badge">
+                            🔥 Bestseller
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                <button
+                    class="heart-button"
+                    onclick="
+                        event.stopPropagation();
+                        this.innerText='♥';
+                    "
+                >
+                    ♡
+                </button>
+
+
+                <img
+                    src="${image}"
+                    alt="${name}"
+                    loading="lazy"
+                    onerror="
+                        this.src='https://placehold.co/500x400/e8e8e8/333333?text=Product';
+                    "
+                >
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="category">
+                    ${category}
+                </div>
+
+
+                <div class="product-name">
+                    ${name}
+                </div>
+
+
+                <div class="rating">
+                    ★★★★★
+                    <span>4.8</span>
+                </div>
+
+
+                <div class="price">
+                    $${price.toFixed(2)}
+                </div>
+
+
+                <button
+                    class="add-cart"
+                    onclick="
+                        event.stopPropagation();
+                        addToCart(${safeProduct});
+                    "
+                >
+                    🛒 Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        const activeUser =
+            localStorage.getItem(
+                "customer_name"
+            );
+
+
+        if (activeUser) {
+
+            document
+                .getElementById(
+                    "loginModal"
+                )
+                .classList.remove(
+                    "active"
+                );
+
+
+            document.getElementById(
+                "headerUserName"
+            ).innerText =
+                `Hi, ${
+                    activeUser.split(" ")[0]
+                }`;
+
+        } else {
+
+            document
+                .getElementById(
+                    "loginModal"
+                )
+                .classList.add(
+                    "active"
+                );
+
+        }
+
+
+        updateCartUI();
+
+        loadCategories();
+
+        loadBestsellers();
+
+        fetchProducts();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

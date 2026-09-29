@@ -1,0 +1,286 @@
+:root {
+    --primary: #e53935;
+    --primary-dark: #c62828;
+    --dark: #171717;
+    --bg: #f6f6f7;
+    --border: #e5e5e5;
+    --muted: #777;
+    --green: #2e9d57;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    background: var(--bg);
+    color: #292929;
+}
+
+
+/* TOP BAR */
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 5%;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.topbar span {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: var(--primary);
+    color: #fff;
+    margin-right: 8px;
+}
+
+
+/* PAGE */
+
+.page {
+    max-width: 1150px;
+    margin: auto;
+    padding: 35px 20px 70px;
+}
+
+.back-button {
+    border: 0;
+    background: none;
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+
+/* GRID */
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns:
+        1.25fr .75fr;
+    gap: 25px;
+}
+
+
+/* CARD */
+
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+
+/* FORM */
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.field {
+    flex: 1;
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.optional {
+    font-weight: 400;
+    color: #999;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+}
+
+input.valid {
+    border-color: var(--green);
+    background: #f7fff9;
+}
+
+input.invalid {
+    border-color: var(--primary);
+    background: #fff7f7;
+}
+
+.readonly {
+    background: #f4f4f4;
+    cursor: not-allowed;
+}
+
+.error {
+    display: block;
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 16px;
+}
+
+.hint {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+
+/* ORDER ITEMS */
+
+.cart-item {
+    display: flex;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: 750;
+}
+
+.item-details {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+
+/* TOTAL */
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    color: #555;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 23px;
+    font-weight: 900;
+    padding-top: 17px;
+    border-top: 1px solid var(--border);
+}
+
+
+/* PLACE ORDER */
+
+.place-order {
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    border-radius: 11px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 850;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.place-order:hover {
+    background: var(--primary-dark);
+}
+
+.place-order:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+
+/* EMPTY */
+
+.empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+
+/* SUCCESS */
+
+.success {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.success-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    width: min(450px,90%);
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 60px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+}
