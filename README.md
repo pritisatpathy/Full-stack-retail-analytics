@@ -72,6 +72,6 @@ New Orders
 SQLite Database
         ↓
 Power BI Dashboard
-<img width="1126" height="742" alt="dashboard 1" src="https://github.com/user-attachments/assets/7617bbd7-239b-4a4d-a1a2-0637d230ecdc" />
+
 
 
